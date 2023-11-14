@@ -36,7 +36,7 @@ def abreviate(txt):
     else:
         return txt
 
-def snyk_scanning(test_id):
+def snyk_scanning(test_id,base_url):
     print("[+] Starting Scanner")
     print("[*] scanning...")
     os.system(run_snyk_code)
@@ -62,21 +62,23 @@ def snyk_scanning(test_id):
             'verified':'False',
             'numerical_severity':convert_severity(int(severity))[1]
         }
-        r=requests.post('https://a1a4-124-158-150-186.ngrok-free.app/api/v2/findings/',json=data,headers=header)
+        r=requests.post(base_url+'/api/v2/findings/',json=data,headers=header)
 
     print('[+] done importing')
 
 if __name__=='__main__':
 
     argumentList=sys.argv[1:]
-    options="p:k:"
-    long_options=["projectName=","apiKey="]
+    options="p:k:u:"
+    long_options=["projectName=","apiKey=","URL="]
     arguments, values = getopt.getopt(argumentList, options, long_options)
     for argument,value in arguments:
         if argument in ('-p','--projectName'):
             project_name=value
         elif argument in ('-k','--apiKey'):
             api_key=value
+        elif argument in ('-u','--URL'):
+            base_url=value
 
     if api_key=='':
         raise ValueError("Test failed: API key not provided")
@@ -86,10 +88,10 @@ if __name__=='__main__':
     today=datetime.now()
     try:
         engage_name=project_name+'_'+today.strftime(date_template)
-        test_id=create_test(api_key,engage_name,project_name)
+        test_id=create_test(api_key,engage_name,project_name,base_url)
     except:
         raise ValueError("Test failed: Failed creating test")
     try:
-        snyk_scanning(test_id)
+        snyk_scanning(test_idm,base_url)
     except:
         raise ValueError("Test failed: Failed uploading scan")
