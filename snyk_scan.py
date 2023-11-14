@@ -94,6 +94,6 @@ if __name__=='__main__':
     except:
         raise ValueError("Test failed: Failed creating test")
     try:
-        snyk_scanning(test_idm,base_url,file_path)
+        snyk_scanning(test_id,base_url,file_path)
     except:
         raise ValueError("Test failed: Failed uploading scan")
