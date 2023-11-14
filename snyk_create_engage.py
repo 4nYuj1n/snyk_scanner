@@ -37,7 +37,7 @@ def check_engage(engage_name):
         'name':engage_name,
     }
     hasil=json.loads(requests.get(endpoint,data,headers=header).text)
-   
+    print(hasil)
     return (hasil['count']>0)
 
 def find_engage(engage_name):
