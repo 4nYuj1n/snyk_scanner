@@ -62,7 +62,7 @@ def snyk_scanning(test_id):
             'verified':'False',
             'numerical_severity':convert_severity(int(severity))[1]
         }
-        r=requests.post('http://localhost:8080/api/v2/findings/',json=data,headers=header)
+        r=requests.post('https://a1a4-124-158-150-186.ngrok-free.app/api/v2/findings/',json=data,headers=header)
 
     print('[+] done importing')
 
