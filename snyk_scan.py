@@ -86,7 +86,7 @@ if __name__=='__main__':
     today=datetime.now()
     try:
         engage_name=project_name+'_'+today.strftime(date_template)
-        test_id=create_test(engage_name,project_name)
+        test_id=create_test(api_key,engage_name,project_name)
     except:
         raise ValueError("Test failed: Failed creating test")
     try:
