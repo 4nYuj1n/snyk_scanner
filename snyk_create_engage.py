@@ -71,6 +71,11 @@ def create_engage(engage_name,product_name):
 
 def create_test(key,engage_name,product_name):
     api_key=key
+    header={
+    "Content-Type": "application/json",
+    'Authorization': f"Token {api_key}",
+    "Accept":"application/json"
+    }
     engage_id=create_engage(engage_name,product_name)
     today=datetime.now()
     endpoint="https://a1a4-124-158-150-186.ngrok-free.app/api/v2/tests/"
