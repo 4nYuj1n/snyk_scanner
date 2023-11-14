@@ -2,7 +2,7 @@ import requests
 import json
 from datetime import datetime
 
-api_key="f0f53e577ad7a3fb95230cada410d1f0bf09e71a"
+api_key=""
 time_template="%H:%M:%S"+'.000Z'
 date_template="%Y-%m-%d"
 def find_product_id(key,name,base_url):
