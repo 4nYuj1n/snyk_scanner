@@ -67,7 +67,7 @@ def snyk_scanning(test_id,base_url,file_path):
 if __name__=='__main__':
     print("[+] Starting Scanner")
     print("[*] scanning...")
-    os.system(f'snyk code test {file_path} --json > snyk_out.json')
+    
     print("[+] Done scanning")
     argumentList=sys.argv[1:]
     options="f:p:k:u:"
@@ -82,7 +82,7 @@ if __name__=='__main__':
             base_url=value
         elif argument in ('-f','--File'):
             file_path=value
-
+    os.system(f'snyk code test {file_path} --json > snyk_out.json')
     if api_key=='':
         raise ValueError("Test failed: API key not provided")
     if project_name=='':
