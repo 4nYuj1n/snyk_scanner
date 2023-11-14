@@ -2,7 +2,7 @@ import requests
 import json
 from datetime import datetime
 
-api_key='f0f53e577ad7a3fb95230cada410d1f0bf09e71a'
+api_key=""
 time_template="%H:%M:%S"+'.000Z'
 date_template="%Y-%m-%d"
 header={
@@ -12,7 +12,7 @@ header={
 }
 def find_product_id(name):
     
-    endpoint="http://localhost:8080/api/v2/products/"
+    endpoint="https://a1a4-124-158-150-186.ngrok-free.app/api/v2/products/"
     data={
         'name':name,
     }
@@ -32,7 +32,7 @@ def get_engange_len(name):
 
 def check_engage(engage_name):
     print('[*] Checking if engage exist')
-    endpoint="http://localhost:8080/api/v2/engagements/"
+    endpoint="https://a1a4-124-158-150-186.ngrok-free.app/api/v2/engagements/"
     data={
         'name':engage_name,
     }
@@ -41,7 +41,7 @@ def check_engage(engage_name):
     return (hasil['count']>0)
 
 def find_engage(engage_name):
-    endpoint="http://localhost:8080/api/v2/engagements/"
+    endpoint="https://a1a4-124-158-150-186.ngrok-free.app/api/v2/engagements/"
     data={
         'name':engage_name
     }
@@ -55,7 +55,7 @@ def create_engage(engage_name,product_name):
         return engage_id
     print("[-] Engagements aren't exist yet")
     print('[*] Creating Engangement')
-    endpoint="http://localhost:8080/api/v2/engagements/"
+    endpoint="https://a1a4-124-158-150-186.ngrok-free.app/api/v2/engagements/"
     product_id=find_product_id(product_name)
     today=datetime.now()
     data={
@@ -69,10 +69,11 @@ def create_engage(engage_name,product_name):
     print('[+] Done Creating Engagement')
     return hasil['id']
 
-def create_test(engage_name,product_name):
+def create_test(key,engage_name,product_name):
+    api_key=key
     engage_id=create_engage(engage_name,product_name)
     today=datetime.now()
-    endpoint="http://localhost:8080/api/v2/tests/"
+    endpoint="https://a1a4-124-158-150-186.ngrok-free.app/api/v2/tests/"
     data={
         'title':today.strftime(time_template),
         'engagement':engage_id,
