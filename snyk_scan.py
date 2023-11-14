@@ -37,16 +37,13 @@ def abreviate(txt):
         return txt
 
 def snyk_scanning(test_id,base_url,file_path):
-    print("[+] Starting Scanner")
-    print("[*] scanning...")
-    os.system(f'snyk code test {file_path} --json > snyk_out.json')
-    print("[+] Done scanning")
+    
     print('[*] Importing to defect dojo')
     snyk_file=open('snyk_out.json').read()
-    print(snyk_file)
     snyk_file=json.loads(snyk_file)
     
     print(f'[*] start importing to {test_id}')
+    print(len(snyk_file["runs"][0]['results']))
     for j in snyk_file["runs"][0]['results']:
         Title = abreviate(j['ruleId'])
         severity = j['properties']['priorityScore']
@@ -68,7 +65,10 @@ def snyk_scanning(test_id,base_url,file_path):
     print('[+] done importing')
 
 if __name__=='__main__':
-
+    print("[+] Starting Scanner")
+    print("[*] scanning...")
+    os.system(f'snyk code test {file_path} --json > snyk_out.json')
+    print("[+] Done scanning")
     argumentList=sys.argv[1:]
     options="f:p:k:u:"
     long_options=["File=,projectName=","apiKey=","URL="]
