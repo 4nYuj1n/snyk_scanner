@@ -43,6 +43,7 @@ def snyk_scanning(test_id,base_url,file_path):
     print("[+] Done scanning")
     print('[*] Importing to defect dojo')
     snyk_file=open('snyk_out.json').read()
+    print(snyk_file)
     snyk_file=json.loads(snyk_file)
     
     print(f'[*] start importing to {test_id}')
