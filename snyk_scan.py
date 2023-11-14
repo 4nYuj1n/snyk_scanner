@@ -12,11 +12,7 @@ api_key=''
 project_name=''
 time_template="%H:%M:%S"+'.000Z'
 date_template="%Y-%m-%d"
-header={
-    "Content-Type": "application/json",
-    'Authorization': f"Token {api_key}",
-    "Accept":"application/json"
-}
+
 
 def convert_severity(score):
     if score < 500 :
@@ -36,14 +32,18 @@ def abreviate(txt):
     else:
         return txt
 
-def snyk_scanning(test_id,base_url,file_path):
-    
+def snyk_scanning(api_key,test_id,base_url,file_path):
+    header={
+    "Content-Type": "application/json",
+    'Authorization': f"Token {api_key}",
+    "Accept":"application/json"
+    }
     print('[*] Importing to defect dojo')
     snyk_file=open('snyk_out.json').read()
     snyk_file=json.loads(snyk_file)
     
     print(f'[*] start importing to {test_id}')
-    print(len(snyk_file["runs"][0]['results']))
+    
     for j in snyk_file["runs"][0]['results']:
         Title = abreviate(j['ruleId'])
         severity = j['properties']['priorityScore']
@@ -66,9 +66,7 @@ def snyk_scanning(test_id,base_url,file_path):
 
 if __name__=='__main__':
     print("[+] Starting Scanner")
-    print("[*] scanning...")
     
-    print("[+] Done scanning")
     argumentList=sys.argv[1:]
     options="f:p:k:u:"
     long_options=["File=,projectName=","apiKey=","URL="]
@@ -82,7 +80,9 @@ if __name__=='__main__':
             base_url=value
         elif argument in ('-f','--File'):
             file_path=value
+    print("[*] scanning...")
     os.system(f'snyk code test {file_path} --json > snyk_out.json')
+    print("[+] Done scanning")
     if api_key=='':
         raise ValueError("Test failed: API key not provided")
     if project_name=='':
@@ -95,6 +95,6 @@ if __name__=='__main__':
     except:
         raise ValueError("Test failed: Failed creating test")
     try:
-        snyk_scanning(test_id,base_url,file_path)
+        snyk_scanning(api_key,test_id,base_url,file_path)
     except:
         raise ValueError("Test failed: Failed uploading scan")
