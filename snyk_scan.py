@@ -69,8 +69,8 @@ def snyk_scanning(test_id,base_url,file_path):
 if __name__=='__main__':
 
     argumentList=sys.argv[1:]
-    options="p:k:u:"
-    long_options=["projectName=","apiKey=","URL="]
+    options="f:p:k:u:"
+    long_options=["File=,projectName=","apiKey=","URL="]
     arguments, values = getopt.getopt(argumentList, options, long_options)
     for argument,value in arguments:
         if argument in ('-p','--projectName'):
