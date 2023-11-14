@@ -72,7 +72,7 @@ def create_engage(engage_name,product_name):
 
 def create_test(key,engage_name,product_name):
     api_key=key
-    header={
+    global header={
     "Content-Type": "application/json",
     'Authorization': f"Token {api_key}",
     "Accept":"application/json"
