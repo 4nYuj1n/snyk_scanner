@@ -67,14 +67,14 @@ def create_engage(key,engage_name,product_name,base_url):
     'Authorization': f"Token {key}",
     "Accept":"application/json"
     }
-    if(check_engage(engage_name,base_url)):
-        engage_id=find_engage(engage_name,base_url)
+    if(check_engage(key,engage_name,base_url)):
+        engage_id=find_engage(key,engage_name,base_url)
         print('[+] Engagements already exist')
         return engage_id
     print("[-] Engagements aren't exist yet")
     print('[*] Creating Engangement')
     endpoint=base_url+"/api/v2/engagements/"
-    product_id=find_product_id(product_name,base_url)
+    product_id=find_product_id(key,product_name,base_url)
     today=datetime.now()
     data={
         'name': engage_name,
