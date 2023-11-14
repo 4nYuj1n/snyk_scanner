@@ -5,14 +5,13 @@ from datetime import datetime
 api_key="f0f53e577ad7a3fb95230cada410d1f0bf09e71a"
 time_template="%H:%M:%S"+'.000Z'
 date_template="%Y-%m-%d"
-header={
+def find_product_id(key,name,base_url):
+    header={
     "Content-Type": "application/json",
-    'Authorization': f"Token {api_key}",
+    'Authorization': f"Token {key}",
     "Accept":"application/json"
-}
-def find_product_id(name):
-    
-    endpoint="https://a1a4-124-158-150-186.ngrok-free.app/api/v2/products/"
+    }
+    endpoint=base_url+"/api/v2/products/"
     data={
         'name':name,
     }
@@ -21,8 +20,13 @@ def find_product_id(name):
     product_id=hasil['results'][0]['id']
     return product_id
 
-def get_engange_len(name):
-    endpoint="https://a1a4-124-158-150-186.ngrok-free.app/api/v2/engagements/"
+def get_engange_len(key,name,base_url):
+    header={
+    "Content-Type": "application/json",
+    'Authorization': f"Token {key}",
+    "Accept":"application/json"
+    }
+    endpoint=base_url+"/api/v2/engagements/"
     data={
         'product':name,
     }
@@ -30,34 +34,47 @@ def get_engange_len(name):
     engage_len=len(hasil['results'])
     return engage_len
 
-def check_engage(engage_name):
+def check_engage(key,engage_name,base_url):
+    header={
+    "Content-Type": "application/json",
+    'Authorization': f"Token {key}",
+    "Accept":"application/json"
+    }
     print('[*] Checking if engage exist')
-    endpoint="https://a1a4-124-158-150-186.ngrok-free.app/api/v2/engagements/"
+    endpoint=base_url+"/api/v2/engagements/"
     data={
         'name':engage_name,
     }
     hasil=json.loads(requests.get(endpoint,data,headers=header).text)
-    print(header)
-    print(hasil)
     return (hasil['count']>0)
 
-def find_engage(engage_name):
-    endpoint="https://a1a4-124-158-150-186.ngrok-free.app/api/v2/engagements/"
+def find_engage(key,engage_name,base_url):
+    header={
+    "Content-Type": "application/json",
+    'Authorization': f"Token {key}",
+    "Accept":"application/json"
+    }
+    endpoint=base_url+"/api/v2/engagements/"
     data={
         'name':engage_name
     }
     hasil=json.loads(requests.get(endpoint,data,headers=header).text)
     return (hasil['results'][0]['id'])
 
-def create_engage(engage_name,product_name):
-    if(check_engage(engage_name)):
-        engage_id=find_engage(engage_name)
+def create_engage(key,engage_name,product_name,base_url):
+    header={
+    "Content-Type": "application/json",
+    'Authorization': f"Token {key}",
+    "Accept":"application/json"
+    }
+    if(check_engage(engage_name,base_url)):
+        engage_id=find_engage(engage_name,base_url)
         print('[+] Engagements already exist')
         return engage_id
     print("[-] Engagements aren't exist yet")
     print('[*] Creating Engangement')
-    endpoint="https://a1a4-124-158-150-186.ngrok-free.app/api/v2/engagements/"
-    product_id=find_product_id(product_name)
+    endpoint=base_url+"/api/v2/engagements/"
+    product_id=find_product_id(product_name,base_url)
     today=datetime.now()
     data={
         'name': engage_name,
@@ -70,16 +87,20 @@ def create_engage(engage_name,product_name):
     print('[+] Done Creating Engagement')
     return hasil['id']
 
-def create_test(key,engage_name,product_name):
-    api_key=key
+def create_test(key,engage_name,product_name,base_url):
     header={
     "Content-Type": "application/json",
     'Authorization': f"Token {key}",
     "Accept":"application/json"
     }
-    engage_id=create_engage(engage_name,product_name)
+    header={
+    "Content-Type": "application/json",
+    'Authorization': f"Token {key}",
+    "Accept":"application/json"
+    }
+    engage_id=create_engage(key,engage_name,product_name,base_url)
     today=datetime.now()
-    endpoint="https://a1a4-124-158-150-186.ngrok-free.app/api/v2/tests/"
+    endpoint=base_url+"/api/v2/tests/"
     data={
         'title':today.strftime(time_template),
         'engagement':engage_id,
