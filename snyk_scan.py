@@ -8,7 +8,7 @@ import getopt,sys
 
 pattern = r"\[(.*?)\]\((.*?)\)"
 api_key=''
-run_snyk_code="snyk code test --json > snyk_out.json"
+
 project_name=''
 time_template="%H:%M:%S"+'.000Z'
 date_template="%Y-%m-%d"
@@ -36,10 +36,10 @@ def abreviate(txt):
     else:
         return txt
 
-def snyk_scanning(test_id,base_url):
+def snyk_scanning(test_id,base_url,file_path):
     print("[+] Starting Scanner")
     print("[*] scanning...")
-    os.system(run_snyk_code)
+    os.system(f'snyk code test {file_path} --json > snyk_out.json')
     print("[+] Done scanning")
     print('[*] Importing to defect dojo')
     snyk_file=open('snyk_out.json').read()
@@ -79,6 +79,8 @@ if __name__=='__main__':
             api_key=value
         elif argument in ('-u','--URL'):
             base_url=value
+        elif argument in ('-f','--File'):
+            file_path=value
 
     if api_key=='':
         raise ValueError("Test failed: API key not provided")
@@ -92,6 +94,6 @@ if __name__=='__main__':
     except:
         raise ValueError("Test failed: Failed creating test")
     try:
-        snyk_scanning(test_idm,base_url)
+        snyk_scanning(test_idm,base_url,file_path)
     except:
         raise ValueError("Test failed: Failed uploading scan")
