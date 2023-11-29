@@ -31,6 +31,7 @@ def get_engange_len(key,name,base_url):
         'product':name,
     }
     hasil=json.loads(requests.get(endpoint,data,headers=header).text)
+    print(hasil)
     engage_len=len(hasil['results'])
     return engage_len
 
