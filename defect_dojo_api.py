@@ -93,11 +93,6 @@ def create_test(key,engage_name,product_name,base_url):
     'Authorization': f"Token {key}",
     "Accept":"application/json"
     }
-    header={
-    "Content-Type": "application/json",
-    'Authorization': f"Token {key}",
-    "Accept":"application/json"
-    }
     engage_id=create_engage(key,engage_name,product_name,base_url)
     today=datetime.now()
     endpoint=base_url+"/api/v2/tests/"
@@ -106,7 +101,31 @@ def create_test(key,engage_name,product_name,base_url):
         'engagement':engage_id,
         'target_start':today.strftime(date_template)+'T'+today.strftime(time_template),
         'target_end':today.strftime(date_template)+'T'+today.strftime(time_template),
-        'test_type':87,
+        'test_type':157,#87 = snyk, #157 = trufflehog
     }
     hasil=json.loads(requests.post(endpoint,json=data,headers=header).text)
     return hasil['id']
+
+def import_scan(key,engage_name,product_name,base_url,file_name):
+    header={
+    'Authorization': f"Token {key}",
+    "Accept":"application/json"
+    }
+    json_data=open(file_name,'rb')
+    
+    endpoint=base_url+"/api/v2/import-scan/"
+    engage_id=create_engage(key,engage_name,product_name,base_url)
+    today=datetime.now()
+    data={
+        'product_name':product_name,
+        'engagement_name':engage_name,
+        'scan_date':today.strftime(date_template),
+        'minimum_severity':'Info',
+        'active':"true",
+        'verified':"false",
+        'scan_type':'Trufflehog Scan',
+        'tag':'yes',
+    }
+    print('[*] importing')
+    hasil=json.loads(requests.post(endpoint,files={'file':json_data},data=data,headers=header).text)
+    return '[+] finish importing'
