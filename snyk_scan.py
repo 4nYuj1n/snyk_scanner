@@ -2,7 +2,7 @@ import os
 import json
 import re
 import requests
-from snyk_create_engage import *
+from defect_dojo_api import *
 from datetime import datetime
 import getopt,sys
 
