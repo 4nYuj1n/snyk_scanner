@@ -45,7 +45,9 @@ def check_engage(key,engage_name,base_url):
     data={
         'name':engage_name,
     }
+    print(requests.get(endpoint,data,headers=header).text)
     hasil=json.loads(requests.get(endpoint,data,headers=header).text)
+    print(hasil)
     return (hasil['count']>0)
 
 def find_engage(key,engage_name,base_url):
