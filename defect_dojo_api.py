@@ -87,7 +87,7 @@ def create_engage(key,engage_name,product_name,base_url):
     print('[+] Done Creating Engagement')
     return hasil['id']
 
-def create_test(key,engage_name,product_name,base_url):
+def create_test(key,engage_name,product_name,base_url,test_type):
     header={
     "Content-Type": "application/json",
     'Authorization': f"Token {key}",
@@ -101,7 +101,7 @@ def create_test(key,engage_name,product_name,base_url):
         'engagement':engage_id,
         'target_start':today.strftime(date_template)+'T'+today.strftime(time_template),
         'target_end':today.strftime(date_template)+'T'+today.strftime(time_template),
-        'test_type':157,#87 = snyk, #157 = trufflehog
+        'test_type':test_type,#87 = snyk, #157 = trufflehog
     }
     hasil=json.loads(requests.post(endpoint,json=data,headers=header).text)
     return hasil['id']
